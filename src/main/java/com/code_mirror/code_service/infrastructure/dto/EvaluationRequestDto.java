@@ -8,5 +8,6 @@ import java.util.List;
 public class EvaluationRequestDto {
     private String solutionCode;
     private List<String> participants;
+    private String adminEmail;
 
 }

@@ -13,6 +13,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Service
 public class ProblemServiceImpl implements ProblemService {
 
@@ -24,16 +26,21 @@ public class ProblemServiceImpl implements ProblemService {
     private ResultsService resultsService;
 
     @Override
-    public CodingProblem generateProblem(ProblemRequestDto request,String roomId) {
+    public CodingProblem generateProblem(ProblemRequestDto request, String roomId) {
+        CodingProblem existing = redisTemplate.opsForValue().get(roomId);
+        if (existing != null) {
+            return existing;
+        }
+
         Mono<CodingProblem> mono = aiClient.generateCodingProblem(request.getLanguage());
 
-        System.out.println(mono.block().toString());
-
         return mono.map(problem -> {
+            problem.setId(String.valueOf(UUID.randomUUID()));
             redisTemplate.opsForValue().set(roomId, problem);
             return problem;
         }).block();
     }
+
 
     @Override
     public EvaluationResultDto evaluateSolution(String roomId, EvaluationRequestDto request) {
@@ -46,10 +53,12 @@ public class ProblemServiceImpl implements ProblemService {
         EvaluationResultDto result = mono.block();
 
         EvaluationResult evaluationResult = new EvaluationResult(result.getScore(), result.getFeedback(),
-                result.getSuggestions(), request.getParticipants());
+                result.getSuggestions(), request.getParticipants(),request.getAdminEmail());
 
         resultsService.create(evaluationResult);
 
         return result;
     }
+
+
 }

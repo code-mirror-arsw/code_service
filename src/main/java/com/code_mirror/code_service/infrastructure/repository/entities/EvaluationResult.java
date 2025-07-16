@@ -28,10 +28,14 @@ public class EvaluationResult {
     @ElementCollection
     private List<String> participants;
 
-    public EvaluationResult(int score, String feedback, List<String> suggestions, List<String> participants) {
+    private String adminEmail;
+
+    public EvaluationResult(int score, String feedback, List<String> suggestions, List<String> participants,
+                            String adminEmail) {
         this.score = score;
         this.feedback = feedback;
         this.suggestions = suggestions;
         this.participants = participants;
+        this.adminEmail = adminEmail;
     }
 }

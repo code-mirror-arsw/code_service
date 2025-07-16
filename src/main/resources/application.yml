@@ -1,5 +1,8 @@
 server:
   port: 8086
+  servlet:
+    context-path: /services/be/code-service
+  address: 0.0.0.0
 
 spring:
   data:

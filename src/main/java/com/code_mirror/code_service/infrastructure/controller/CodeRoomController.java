@@ -1,4 +1,4 @@
-package com.code_mirror.code_service.infrastructure;
+package com.code_mirror.code_service.infrastructure.controller;
 
 
 import com.code_mirror.code_service.domain.ports.ProblemService;

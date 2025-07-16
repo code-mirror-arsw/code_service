@@ -12,10 +12,10 @@ public class OpenAIRequest {
     public OpenAIRequest(String model, String prompt) {
         this.model = model;
         this.messages = List.of(
-                Map.of("role", "system", "content", "Eres un asistente experto en evaluación de código."),
                 Map.of("role", "user", "content", prompt)
         );
     }
+
 
     public String getModel() {
         return model;
