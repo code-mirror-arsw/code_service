@@ -97,7 +97,7 @@ public class OpenAIClient implements AIClient {
     private <T> Mono<T> callOpenAI(String prompt, Class<T> responseType) {
         return openAIWebClient.post()
                 .uri("/v1/chat/completions")
-                .header("Authorization", "Bearer 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")
+                .header("Authorization", "Bearer ")
                 .header("Content-Type", "application/json")
                 .bodyValue(new OpenAIRequest("deepseek/deepseek-chat-v3-0324:free", prompt))
                 .retrieve()

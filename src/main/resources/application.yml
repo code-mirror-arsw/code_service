@@ -35,3 +35,8 @@ doc:
     title: User API
     description: Documentation for the User API
     version: 1.0.0
+
+kafka:
+  bootstrap-servers: localhost:9092
+  notify-topic:
+    name: interview-topic

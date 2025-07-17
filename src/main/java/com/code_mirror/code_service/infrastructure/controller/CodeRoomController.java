@@ -6,6 +6,7 @@ import com.code_mirror.code_service.infrastructure.dto.EvaluationRequestDto;
 import com.code_mirror.code_service.infrastructure.dto.EvaluationResultDto;
 import com.code_mirror.code_service.infrastructure.dto.ProblemRequestDto;
 import com.code_mirror.code_service.infrastructure.repository.CodingProblem;
+import com.code_mirror.code_service.infrastructure.repository.entities.EvaluationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
