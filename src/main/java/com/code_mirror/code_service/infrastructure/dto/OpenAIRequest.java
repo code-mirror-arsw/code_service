@@ -4,18 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 public class OpenAIRequest {
-
     private String model;
     private List<Map<String, String>> messages;
-    private double temperature = 0.3;
 
     public OpenAIRequest(String model, String prompt) {
         this.model = model;
-        this.messages = List.of(
-                Map.of("role", "user", "content", prompt)
-        );
+        this.messages = List.of(Map.of("role", "user", "content", prompt));
     }
-
 
     public String getModel() {
         return model;
@@ -25,8 +20,11 @@ public class OpenAIRequest {
         return messages;
     }
 
-    public double getTemperature() {
-        return temperature;
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setMessages(List<Map<String, String>> messages) {
+        this.messages = messages;
     }
 }
-

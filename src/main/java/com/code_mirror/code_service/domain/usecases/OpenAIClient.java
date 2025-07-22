@@ -23,6 +23,12 @@ public class OpenAIClient implements AIClient {
     @Value("${openai.api.model}")
     private String openApiModel;
 
+    @Value("${openai.api.key}")
+    private String openApiKey;
+
+
+
+
     @Override
     public Mono<CodingProblem> generateCodingProblem(String language) {
         String prompt = """
@@ -97,9 +103,9 @@ public class OpenAIClient implements AIClient {
     private <T> Mono<T> callOpenAI(String prompt, Class<T> responseType) {
         return openAIWebClient.post()
                 .uri("/v1/chat/completions")
-                .header("Authorization", "Bearer ")
+                .header("Authorization", "Bearer " + openApiKey)
                 .header("Content-Type", "application/json")
-                .bodyValue(new OpenAIRequest("deepseek/deepseek-chat-v3-0324:free", prompt))
+                .bodyValue(new OpenAIRequest(openApiModel, prompt))
                 .retrieve()
                 .bodyToMono(String.class)
                 .flatMap(responseText -> {
@@ -121,6 +127,4 @@ public class OpenAIClient implements AIClient {
                     }
                 });
     }
-
-
 }

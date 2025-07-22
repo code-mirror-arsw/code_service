@@ -27,7 +27,7 @@ openai:
   api:
     key: "sk-TU_API_KEY_DE_OPENAI"
     url: "https://api.openai.com/v1/chat/completions"
-    model: "gpt-4-turbo-preview"
+    model: "gpt-3.5-turbo"
 
 doc:
   api:

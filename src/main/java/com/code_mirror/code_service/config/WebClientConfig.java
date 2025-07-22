@@ -1,6 +1,7 @@
 package com.code_mirror.code_service.config;
 
 import com.code_mirror.code_service.infrastructure.repository.CodingProblem;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -12,10 +13,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
+    @Value("${openai.api.url}")
+    private String openApiUrl;
+
+
     @Bean
     public WebClient openAIWebClient() {
         return WebClient.builder()
-                .baseUrl("https://openrouter.ai/api")
+                .baseUrl(openApiUrl)
                 .build();
     }
 
