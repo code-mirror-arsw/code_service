@@ -6,6 +6,7 @@ import java.util.Map;
 public class OpenAIRequest {
     private String model;
     private List<Map<String, String>> messages;
+    private double temperature = 0.9;
 
     public OpenAIRequest(String model, String prompt) {
         this.model = model;

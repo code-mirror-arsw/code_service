@@ -1,0 +1,55 @@
+name: Deploy Code Service to Azure VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      - name: Copy JAR to Azure VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.CODE_SERVER_HOST }}
+          username: ${{ secrets.CODE_SERVER_USER }}
+          password: ${{ secrets.CODE_SERVER_PASSWORD }}
+          source: target/code-service-0.0.1-SNAPSHOT.jar
+          target: /opt/codeServer/
+
+      - name: Restart Code Service on Azure VM
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.CODE_SERVER_HOST }}
+          username: ${{ secrets.CODE_SERVER_USER }}
+          password: ${{ secrets.CODE_SERVER_PASSWORD }}
+          script: |
+            echo "🛑 Killing any process on port 8086..."
+            fuser -k 8086/tcp || true
+
+            echo "🧹 Removing previous .jar..."
+            rm -f /opt/codeServer/code-service-0.0.1-SNAPSHOT.jar
+
+            echo "📦 Moving new .jar..."
+            mv /opt/codeServer/target/code-service-0.0.1-SNAPSHOT.jar /opt/codeServer/code-service-0.0.1-SNAPSHOT.jar
+
+            echo "🚀 Starting code service with nohup..."
+            nohup java -jar /opt/codeServer/code-service-0.0.1-SNAPSHOT.jar > /opt/codeServer/app.log 2>&1 &
+
+            echo "📄 Showing last 50 lines of app.log..."
+            sleep 5
+            tail -n 50 /opt/codeServer/app.log
